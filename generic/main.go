@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // SumIntsOrFloats sums the values of map m. It supports both int64 and float64
 // as types for map values.
@@ -12,22 +14,8 @@ func SumIntsOrFloats[K comparable, V int64 | float64](m map[K]V) V {
 	return s
 }
 
-// SumInts adds together the values of m.
-func SumInts(m map[string]int64) int64 {
-	var s int64
-	for _, v := range m {
-		s += v
-	}
-	return s
-}
-
-// SumFloats adds together the values of m.
-func SumFloats(m map[string]float64) float64 {
-	var s float64
-	for _, v := range m {
-		s += v
-	}
-	return s
+func AnyObjects(o any) (any, error) {
+	return o, nil
 }
 
 func main() {
@@ -43,11 +31,17 @@ func main() {
 		"second": 26.99,
 	}
 
-	fmt.Printf("Non-Generic Sums: %v and %v\n",
-		SumInts(ints),
-		SumFloats(floats))
-
 	fmt.Printf("Generic Sums: %v and %v\n",
 		SumIntsOrFloats[string, int64](ints),
 		SumIntsOrFloats[string, float64](floats))
+
+	o, err := AnyObjects("Hello")
+	if err == nil {
+		fmt.Printf("%v\n", o)
+	} else {
+		fmt.Printf("%s", err.Error())
+	}
+
+	fmt.Printf("hi")
+
 }
